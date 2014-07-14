@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+
+    <div style="text-align: center">
+        <video id="video"></video>
+    </div>
+
+    <script type="text/javascript">
+        (function() {
+
+          var streaming = false,
+              video  = document.querySelector('#video'),
+              width = 640,
+              height = 0;
+
+          navigator.getMedia = ( navigator.getUserMedia ||
+                                 navigator.webkitGetUserMedia ||
+                                 navigator.mozGetUserMedia ||
+                                 navigator.msGetUserMedia);
+
+          navigator.getMedia(
+            {
+              video: true,
+              audio: false
+            },
+            function(stream) {
+              if (navigator.mozGetUserMedia) {
+                video.mozSrcObject = stream;
+              } else {
+                var vendorURL = window.URL || window.webkitURL;
+                video.src = vendorURL.createObjectURL(stream);
+              }
+              video.play();
+            },
+            function(err) {
+              console.log("An error occured! " + err);
+            }
+          );
+
+          video.addEventListener('canplay', function(ev){
+            if (!streaming) {
+              height = video.videoHeight / (video.videoWidth/width);
+              video.setAttribute('width', width);
+              video.setAttribute('height', videoHeight);
+              canvas.setAttribute('width', width);
+              canvas.setAttribute('height', height);
+              streaming = true;
+            }
+          }, false);
+
+        })();
+    </script>
+
+</body>
+</html>
